@@ -1,0 +1,64 @@
+const AppFileUtil = require('../util/file.util');
+
+function getRandomInt(min, max) {
+    min = Math.ceil(min);
+    max = Math.floor(max);
+    return Math.floor(Math.random() * (max - min) + min); // The maximum is exclusive and the minimum is inclusive
+}
+
+const getAllNotes = (req, res) => {
+
+    res.json(AppFileUtil.getData('note'));
+
+}
+
+const saveNote = (req, res) => {
+
+    const noteBody = req.body;
+    if (noteBody.noteText) {
+        noteBody.id = getRandomInt(10000, 99999);
+        let notes = AppFileUtil.getData('note');
+        if (!notes) {
+            notes = [];
+        }
+        notes.push(noteBody);
+        AppFileUtil.writeData('note', notes);
+    }
+    res.json({ success: true });
+
+}
+
+const editNote = (req, res) => {
+
+    const noteId = req.params.id;
+    const noteBody = req.body;
+    if (noteBody.noteText) {
+        noteBody.id = noteId;
+        const notes = AppFileUtil.getData('note');
+        const noteToEdit = notes.find((n) => n.id == noteId);
+        noteToEdit.noteText = noteBody.noteText;
+        AppFileUtil.writeData('note', notes);
+    }
+    res.json({ success: true });
+
+}
+
+const deleteNote = (req, res) => {
+
+    const noteId = req.params.id;
+    if (noteId) {
+        const notes = AppFileUtil.getData('note');
+        const noteToDeleteIndex = notes.findIndex((n) => n.id == noteId)
+        notes.splice(noteToDeleteIndex, 1);
+        AppFileUtil.writeData('note', notes);
+    }
+    res.json({ success: true });
+
+}
+
+module.exports = {
+    getAllNotes,
+    saveNote,
+    editNote,
+    deleteNote
+}
