@@ -8,7 +8,7 @@ function getRandomInt(min, max) {
 
 const getAllNotes = (req, res) => {
 
-    res.json(AppFileUtil.getData('note'));
+    res.json(AppFileUtil.readData('note'));
 
 }
 
@@ -18,10 +18,7 @@ const saveNote = (req, res) => {
         const noteBody = req.body;
         if (noteBody.noteText) {
             noteBody.id = getRandomInt(10000, 99999);
-            let notes = AppFileUtil.getData('note');
-            if (!notes) {
-                notes = [];
-            }
+            let notes = AppFileUtil.readData('note');
             notes.push(noteBody);
             AppFileUtil.writeData('note', notes);
         }
@@ -37,9 +34,9 @@ const editNote = (req, res) => {
     try {
         const noteId = req.params.id;
         const noteBody = req.body;
-        if (noteBody.noteText) {
+        if (noteId && noteBody.noteText) {
             noteBody.id = noteId;
-            const notes = AppFileUtil.getData('note');
+            const notes = AppFileUtil.readData('note');
             const noteToEdit = notes.find((n) => n.id == noteId);
             noteToEdit.noteText = noteBody.noteText;
             AppFileUtil.writeData('note', notes);
@@ -56,7 +53,7 @@ const deleteNote = (req, res) => {
     try {
         const noteId = req.params.id;
         if (noteId) {
-            const notes = AppFileUtil.getData('note');
+            const notes = AppFileUtil.readData('note');
             const noteToDeleteIndex = notes.findIndex((n) => n.id == noteId)
             notes.splice(noteToDeleteIndex, 1);
             AppFileUtil.writeData('note', notes);

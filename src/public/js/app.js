@@ -154,7 +154,7 @@ async function saveNote() {
 
 async function deleteNote() {
     showLoader();
-    await deleteServerNote();
+    await deleteServerNote(editNoteId);
     await refreshNotes();
     closeNoteEditor();
     hideLoader();
