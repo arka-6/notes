@@ -121,7 +121,7 @@ function openNoteEditor(note) {
         // EDIT MODE
         noteHeaderDOM.innerHTML = 'Edit Note';
         isEditMode = true;
-        editNoteId = note.id;
+        editNoteId = note._id;
         saveBtnDOM.disabled = false;
         deleteNoteBtnDOM.classList.remove('hide');
         const noteEditorDOM = document.getElementById('noteEditor');
