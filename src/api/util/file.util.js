@@ -4,7 +4,7 @@ const path = require('path');
 class AppFileUtil {
     static readData(resource) {
         try {
-            const file = fs.readFileSync(`tmp/data/${resource}.json`, 'utf8');
+            const file = fs.readFileSync(`tmp/${resource}.json`, 'utf8');
             const data = JSON.parse(file);
             return data;
         } catch (ex) {
@@ -14,7 +14,7 @@ class AppFileUtil {
 
     static writeData(resource, dataObject) {
         const data = JSON.stringify(dataObject);
-        fs.writeFileSync(path.join(process.cwd(), `tmp/data/${resource}.json`), data);
+        fs.writeFileSync(path.join(process.cwd(), `tmp/${resource}.json`), data);
     }
 }
 
