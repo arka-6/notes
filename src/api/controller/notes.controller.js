@@ -14,45 +14,57 @@ const getAllNotes = (req, res) => {
 
 const saveNote = (req, res) => {
 
-    const noteBody = req.body;
-    if (noteBody.noteText) {
-        noteBody.id = getRandomInt(10000, 99999);
-        let notes = AppFileUtil.getData('note');
-        if (!notes) {
-            notes = [];
+    try {
+        const noteBody = req.body;
+        if (noteBody.noteText) {
+            noteBody.id = getRandomInt(10000, 99999);
+            let notes = AppFileUtil.getData('note');
+            if (!notes) {
+                notes = [];
+            }
+            notes.push(noteBody);
+            AppFileUtil.writeData('note', notes);
         }
-        notes.push(noteBody);
-        AppFileUtil.writeData('note', notes);
+        res.json({ success: true });
+    } catch (ex) {
+        res.status(500).json({ 'error': { 'message': 'An Error has occurred' } })
     }
-    res.json({ success: true });
 
 }
 
 const editNote = (req, res) => {
 
-    const noteId = req.params.id;
-    const noteBody = req.body;
-    if (noteBody.noteText) {
-        noteBody.id = noteId;
-        const notes = AppFileUtil.getData('note');
-        const noteToEdit = notes.find((n) => n.id == noteId);
-        noteToEdit.noteText = noteBody.noteText;
-        AppFileUtil.writeData('note', notes);
+    try {
+        const noteId = req.params.id;
+        const noteBody = req.body;
+        if (noteBody.noteText) {
+            noteBody.id = noteId;
+            const notes = AppFileUtil.getData('note');
+            const noteToEdit = notes.find((n) => n.id == noteId);
+            noteToEdit.noteText = noteBody.noteText;
+            AppFileUtil.writeData('note', notes);
+        }
+        res.json({ success: true });
+    } catch (ex) {
+        res.status(500).json({ 'error': { 'message': 'An Error has occurred' } })
     }
-    res.json({ success: true });
 
 }
 
 const deleteNote = (req, res) => {
 
-    const noteId = req.params.id;
-    if (noteId) {
-        const notes = AppFileUtil.getData('note');
-        const noteToDeleteIndex = notes.findIndex((n) => n.id == noteId)
-        notes.splice(noteToDeleteIndex, 1);
-        AppFileUtil.writeData('note', notes);
+    try {
+        const noteId = req.params.id;
+        if (noteId) {
+            const notes = AppFileUtil.getData('note');
+            const noteToDeleteIndex = notes.findIndex((n) => n.id == noteId)
+            notes.splice(noteToDeleteIndex, 1);
+            AppFileUtil.writeData('note', notes);
+        }
+        res.json({ success: true });
+    } catch (ex) {
+        res.status(500).json({ 'error': { 'message': 'An Error has occurred' } })
     }
-    res.json({ success: true });
 
 }
 

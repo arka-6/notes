@@ -44,47 +44,63 @@ async function getServerNotes() {
 }
 
 async function editServerNote(noteId, noteText) {
-    const noteResponse = await fetch(`/api/note/${noteId}`, {
-        method: 'PUT', headers: {
-            'Content-Type': 'application/json'
-        }, body: JSON.stringify({ noteText: noteText })
-    });
-    const isSuccess = await noteResponse.json();
-    return isSuccess.success;
+    try {
+        const noteResponse = await fetch(`/api/note/${noteId}`, {
+            method: 'PUT', headers: {
+                'Content-Type': 'application/json'
+            }, body: JSON.stringify({ noteText: noteText })
+        });
+        const isSuccess = await noteResponse.json();
+        return isSuccess.success;
+    } catch (ex) {
+        console.log(ex);
+    }
 }
 
 async function addServerNote(noteText) {
-    const noteResponse = await fetch('/api/note', {
-        method: 'POST', headers: {
-            'Content-Type': 'application/json'
-        }, body: JSON.stringify({ noteText: noteText })
-    });
-    const isSuccess = await noteResponse.json();
-    return isSuccess.success;
+    try {
+        const noteResponse = await fetch('/api/note', {
+            method: 'POST', headers: {
+                'Content-Type': 'application/json'
+            }, body: JSON.stringify({ noteText: noteText })
+        });
+        const isSuccess = await noteResponse.json();
+        return isSuccess.success;
+    } catch (ex) {
+        console.log(ex);
+    }
 }
 
 async function deleteServerNote(noteId) {
-    const noteResponse = await fetch(`/api/note/${noteId}`, { method: 'DELETE' });
-    const isSuccess = await noteResponse.json();
-    return isSuccess.success;
+    try {
+        const noteResponse = await fetch(`/api/note/${noteId}`, { method: 'DELETE' });
+        const isSuccess = await noteResponse.json();
+        return isSuccess.success;
+    } catch (ex) {
+        console.log(ex);
+    }
 }
 
 async function refreshNotes() {
-    const notes = await getServerNotes();
-    const noteListDOM = document.getElementById('noteList');
-    noteListDOM.innerHTML = '';
-    if (notes?.length > 0) {
-        notes.forEach(note => {
-            if (note) {
-                const noteDOM = document.createElement('a');
-                noteDOM.classList.add('note');
-                noteDOM.innerHTML = note.noteText;
-                noteDOM.onclick = () => { openNoteEditor(note) };
-                noteListDOM.appendChild(noteDOM);
-            }
-        });
-    } else {
-        noteListDOM.innerHTML = '<div class="no-records"><div class="icon"><i class="bi bi-sticky"></i></div><div>No notes saved yet...</div></div>';
+    try {
+        const notes = await getServerNotes();
+        const noteListDOM = document.getElementById('noteList');
+        noteListDOM.innerHTML = '';
+        if (notes?.length > 0) {
+            notes.forEach(note => {
+                if (note) {
+                    const noteDOM = document.createElement('a');
+                    noteDOM.classList.add('note');
+                    noteDOM.innerHTML = note.noteText;
+                    noteDOM.onclick = () => { openNoteEditor(note) };
+                    noteListDOM.appendChild(noteDOM);
+                }
+            });
+        } else {
+            noteListDOM.innerHTML = '<div class="no-records"><div class="icon"><i class="bi bi-sticky"></i></div><div>No notes saved yet...</div></div>';
+        }
+    } catch (ex) {
+        noteListDOM.innerHTML = `<div class="no-records"><div class="icon"><i class="bi bi-sticky"></i></div><div>An Error has occurred. Please try again later...</div></div>`;
     }
 }
 
