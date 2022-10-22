@@ -82,9 +82,9 @@ async function deleteServerNote(noteId) {
 }
 
 async function refreshNotes() {
+    const noteListDOM = document.getElementById('noteList');
     try {
         const notes = await getServerNotes();
-        const noteListDOM = document.getElementById('noteList');
         noteListDOM.innerHTML = '';
         if (notes?.length > 0) {
             notes.forEach(note => {
