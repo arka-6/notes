@@ -27,7 +27,7 @@ const saveNote = (req, res) => {
         }
         res.json({ success: true });
     } catch (ex) {
-        res.status(500).json({ 'error': { 'message': 'An Error has occurred' } })
+        res.status(500).json({ 'error': ex })
     }
 
 }
