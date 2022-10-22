@@ -9,7 +9,7 @@ class AppDbUtil {
 
     static connectionString = 'mongodb+srv://lumenobit:4VCEPWAsd5Wmg63j@cluster0.aczbpwr.mongodb.net/test';
 
-    static getMongoDbClient = async () => {
+    static async getMongoDbClient() {
         return await MongoClient.connect(
             this.connectionString,
             { useNewUrlParser: true, useUnifiedTopology: true });
